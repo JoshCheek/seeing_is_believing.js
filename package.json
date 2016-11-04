@@ -1,0 +1,19 @@
+{
+  "name": "seeing_is_believing.js",
+  "version": "0.1.0",
+  "description": "Records and displays the result of every line of code in a JavaScript file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/JoshCheek/seeing_is_believing.js"
+  },
+  "keywords": [
+    "feedback",
+    "xmpfilter"
+  ],
+  "author": "JoshCheek",
+  "license": "ISC"
+}
