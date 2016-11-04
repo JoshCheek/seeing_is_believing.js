@@ -11,7 +11,6 @@ function AggregateResult(callback) {
 
   return resultHandler
   function resultHandler([type, data]) {
-    console.log([type, data])
     switch (type) {
       case "line_result":
         const lineResults = result[lineResultsSym]
