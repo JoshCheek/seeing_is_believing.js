@@ -40,14 +40,14 @@ describe('wrap', function() {
     })
 
     it('wraps the rightmost value of a variable declaration\'s value when present', function() {
-      assertWraps("var abc = 123;",            "var abc = <123>;")
-      // assertWraps("var abc = 123, def = 456;", "var abc = 123, def = <456>")
+      assertWraps("var abc = 123;",           "var abc = <123>;")
+      assertWraps("var abc = 123, def = 456", "var abc = 123, def = <456>")
 
-      assertWraps("let abc = 123;",            "let abc = <123>;")
-      // assertWraps("let abc = 123, def = 456;", "let abc = 123, def = <456>")
+      assertWraps("let abc = 123;",           "let abc = <123>;")
+      assertWraps("let abc = 123, def = 456", "let abc = 123, def = <456>")
 
-      assertWraps("const abc = 123;",            "const abc = <123>;")
-      // assertWraps("const abc = 123, def = 456;", "const abc = 123, def = <456>")
+      assertWraps("const abc = 123;",           "const abc = <123>;")
+      assertWraps("const abc = 123, def = 456", "const abc = 123, def = <456>")
     })
   })
 
@@ -61,15 +61,15 @@ describe('wrap', function() {
 
   describe('for loops', function() {
     it('wraps the value and body of a for/in statements', function() {
-      assertWraps("for (let a in b) { }", "for (let a in <b>) { }")
-      // assertWraps("for (let a in b) {\n    c\n}", "for (let a in b) {\n    <c>\n}")
-      // assertWraps("for (let a in b) c", "for (let a in b) <c>")
+      assertWraps("for (let a in b) { }",       "for (let a in <b>) { }")
+      assertWraps("for (let a in b) c",         "for (let a in b) <c>")
+      assertWraps("for (let a in b) {\n  c\n}", "for (let a in <b>) {\n  <c>\n}")
     })
 
     it('wrap the value and body of a for/of statements', function() {
-      assertWraps("for (let a of b) { }",   "for (let a of <b>) { }")
-      // assertWraps("for (let a of b) { c }", "for (let a of b) { <c> }")
-      // assertWraps("for (let a of b) c",     "for (let a of b) <c>")
+      assertWraps("for (let a of b) { }",       "for (let a of <b>) { }")
+      assertWraps("for (let a of b) c",         "for (let a of b) <c>")
+      assertWraps("for (let a of b) {\n  c\n}", "for (let a of <b>) {\n  <c>\n}")
     })
   })
 })
