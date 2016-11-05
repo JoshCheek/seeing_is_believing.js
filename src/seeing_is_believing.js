@@ -27,13 +27,9 @@ function SeeingIsBelieving({code, handler}) {
 
 function rewriteCodeToRecord(code) {
   return wrap({
-    code: code,
-    aroundEach: function(line, ast) {
-      return {
-        "type": "CallExpression",
-        "callee": {"type": "Identifier", "name": "record"},
-        "arguments": [{"type": "Literal", "value": line, "raw": `${line}`}, ast]
-      }
+    code:       code,
+    aroundEach: (ast, line) => {
+      ast.update(`record(${line}, ${ast.source()})`)
     }
   })
 }
