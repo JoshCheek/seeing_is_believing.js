@@ -12,12 +12,16 @@ function wrap({code, aroundEach}) {
 }
 
 function wrapAst(ast, aroundEach) {
+  // console.dir(ast, {colors: true, depth: 5})
   let newAst = dup(ast)
   switch(ast.type) {
     case "Literal":
     case "Identifier":
-    case "ExpressionStatement":
+    case "BinaryExpression":
       newAst = aroundEach(ast.loc.start.line, ast)
+      break
+    case "ExpressionStatement":
+      newAst.expression = wrapAst(ast.expression, aroundEach)
       break
     case "Program":
     case "BlockStatement":

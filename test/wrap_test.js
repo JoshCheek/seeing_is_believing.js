@@ -22,9 +22,9 @@ describe('wrap', function() {
   }
 
   it('yields the current line to the wrapper function', function() {
-    assertWraps(`'a';\n'b';`, `'a1';\n'b2';`, function(line, directive) {
-      directive.expression.value += line
-      return directive
+    assertWraps(`'a';\n'b';`, `'a1';\n'b2';`, function(line, expression) {
+      expression.value += line
+      return expression
     })
   })
 

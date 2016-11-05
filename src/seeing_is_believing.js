@@ -2,6 +2,7 @@
 
 const util = require('util');
 const vm   = require('vm');
+const wrap = require('./seeing_is_believing/wrap')
 
 module.exports = SeeingIsBelieving
 function SeeingIsBelieving({code, handler}) {
@@ -25,20 +26,14 @@ function SeeingIsBelieving({code, handler}) {
 }
 
 function rewriteCodeToRecord(code) {
-  const preamble = ""
-  let   lineNum  = 0
-  const rewrittenLines = code
-          .split("\n")
-          .map(line => {
-            ++lineNum
-            if(line.startsWith("var")) {
-              const [declaration, body] = line.split("=")
-              return `${declaration}=record(${lineNum}, ${body})`
-
-            } else {
-              return `record(${lineNum}, ${line})`
-            }
-          })
-          .join("\n")
-  return preamble + rewrittenLines
+  return wrap({
+    code: code,
+    aroundEach: function(line, ast) {
+      return {
+        "type": "CallExpression",
+        "callee": {"type": "Identifier", "name": "record"},
+        "arguments": [{"type": "Literal", "value": line, "raw": `${line}`}, ast]
+      }
+    }
+  })
 }
