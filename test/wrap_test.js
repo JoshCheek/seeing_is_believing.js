@@ -13,7 +13,7 @@ describe('wrap', function() {
     aroundEach = aroundEach || function(node, line) {
       node.update(`<${node.source()}>`)
     }
-    const actual = wrap({code: input, aroundEach: aroundEach})
+    const actual = wrap(input, aroundEach)
     assert.equal(actual, expected)
   }
 

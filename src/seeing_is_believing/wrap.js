@@ -1,58 +1,50 @@
 'use strict'
-const esprima    = require('esprima')
-const objectKeys = require('object-keys');
+const esprima  = require('esprima')
 
-module.exports   = wrap
+module.exports = wrap
 
-function wrap({code, aroundEach}) {
-  const ast      = esprima.parse(code, {loc: true, range: true})
-  const toRecord = {}
-  const chunks   = code.split('')
+function wrap(code, aroundEach) {
+  const ast          = esprima.parse(code, {loc: true, range: true})
+  const toWrap       = {}
+  const sourceChunks = code.split('')
 
-  // walk top down and decorate / record for each line
-  walk(ast, null, function(node, parent) {
-    decorateNode(node, parent, chunks)
-    const line = node.loc.end.line
-    if(recordLeftOverRight(node, toRecord[line]))
-      toRecord[line] = node
+  // decorate / identify lines to wrap
+  walk(ast, null, (node, parent) => {
+    decorateNode(node, parent, sourceChunks)
+    if(shouldRecordPotentialOverPrev(node, toWrap[node.loc.end.line]))
+      toWrap[node.loc.end.line] = node
   })
 
-  // walk bottom up and hand to cb for rewriting
-  walk(ast, null, function(node, parent) {
-    const line = node.loc.end.line
-    if(node == toRecord[line])
-      aroundEach(node, line)
+  // wrap the identified lines
+  walk(ast, null, (node, parent) => {
+    if(node == toWrap[node.loc.end.line])
+      aroundEach(node, node.loc.end.line)
   })
 
-  return chunks.join('')
+  return sourceChunks.join('')
 }
 
-function recordLeftOverRight(left, right) {
-  if(!left)  return false
-  if(!right) return true
-  const [ leftStart,  leftStop] = left.range
-  const [rightStart, rightStop] = right.range
-  if(leftStop  > rightStop)  return true  // left is farther right on the line
-  if(leftStop  < rightStop)  return false // right is farther right on the line
-  if(leftStart < rightStart) return true  // left starts earlier (wraps right)
+
+// assumes potential exists, and they both end on the same line
+function shouldRecordPotentialOverPrev(potential, prev) {
+  if(!prev) return true
+  const [potentialStart, potentialEnd] = potential.range
+  const [     prevStart,      prevEnd] = prev.range
+  if(potentialEnd   > prevEnd)   return true
+  if(potentialEnd   < prevEnd)   return false
+  if(potentialStart < prevStart) return true
   return false
 }
 
-function decorateNode(node, parent, chunks) {
+
+function decorateNode(node, parent, sourceChunks) {
   const [start, finish] = node.range
   node.parent = parent
-  node.source = () => chunks.slice(start, finish).join('')
-
-  const prev = node.update
-  if(prev && typeof prev === 'object')
-    for(let key in objectKeys(prev))
-      update[key] = prev[key]
-  node.update = update
-
-  function update (s) {
-    chunks[start] = s;
+  node.source = () => sourceChunks.slice(start, finish).join('')
+  node.update = (newSource) => {
+    sourceChunks[start] = newSource
     for(let i = start + 1; i < finish; i++)
-      chunks[i] = ''
+      sourceChunks[i] = ''
   }
 }
 
