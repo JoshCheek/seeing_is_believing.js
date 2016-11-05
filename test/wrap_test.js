@@ -7,22 +7,26 @@ const wrap   = require('../src/seeing_is_believing/wrap')
 // * The rest of https://github.com/estree/estree/blob/master/es2015.md
 // * The other file in that spec
 // * multiline expressions
-// * talk about line numbers
 
 describe('wrap', function() {
-  function assertWraps(input, expected) {
-    const actual = wrap({
-      code: input,
-      aroundEach: function(line, node) {
-        return {
-          type:      "CallExpression",
-          arguments: [node],
-          callee:    {type: "Identifier", name: "W"},
-        }
-      },
-    })
+  function assertWraps(input, expected, aroundEach) {
+    aroundEach = aroundEach || function(line, node) {
+      return {
+        type:      "CallExpression",
+        arguments: [node],
+        callee:    {type: "Identifier", name: "W"},
+      }
+    }
+    const actual = wrap({code: input, aroundEach: aroundEach})
     assert.equal(actual, expected)
   }
+
+  it('yields the current line to the wrapper function', function() {
+    assertWraps(`'a';\n'b';`, `'a1';\n'b2';`, function(line, directive) {
+      directive.expression.value += line
+      return directive
+    })
+  })
 
   it('does not wrap empty programs', function() {
     assertWraps('', '')

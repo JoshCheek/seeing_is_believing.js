@@ -5,7 +5,7 @@ const escodegen = require('escodegen')
 module.exports = wrap
 
 function wrap({code, aroundEach}) {
-  let ast         = esprima.parse(code)
+  let ast         = esprima.parse(code, {loc: true})
   let wrappedAst  = wrapAst(ast, aroundEach)
   let wrappedCode = escodegen.generate(wrappedAst)
   return wrappedCode
@@ -17,7 +17,7 @@ function wrapAst(ast, aroundEach) {
     case "Literal":
     case "Identifier":
     case "ExpressionStatement":
-      newAst = aroundEach(1, ast)
+      newAst = aroundEach(ast.loc.start.line, ast)
       break
     case "Program":
     case "BlockStatement":
