@@ -57,7 +57,13 @@ describe('wrap', function() {
       assertWraps('a.b',   '<a.b>')
       assertWraps('a.b.c', '<a.b.c>')
     })
-    specify('calls')
+
+    specify('calls', function() {
+      assertWraps('a()',     '<a()>')
+      assertWraps('a.b()',   '<a.b()>')
+      assertWraps('a.b.c()', '<a.b.c()>')
+    })
+
     specify('the value of a spread expression is wrapped and the result is spread')
     specify('arrays')
     specify('arrow function bodies')
