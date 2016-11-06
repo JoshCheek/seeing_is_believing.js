@@ -73,7 +73,13 @@ describe('wrap', function() {
       assertWraps('["a", "b"]', '<["a", "b"]>')
     })
 
-    specify('arrow function bodies')
+    specify('arrow function bodies', function() {
+      assertWraps('() => 1',      '<() => 1>')
+      assertWraps('(a) => 1',     '<(a) => 1>')
+      assertWraps('(a, b) => 1',  '<(a, b) => 1>')
+      assertWraps('a => 1',       '<a => 1>')
+      assertWraps('(a) => a + a', '<(a) => a + a>')
+    })
   })
 
   describe('for loops', function() {
