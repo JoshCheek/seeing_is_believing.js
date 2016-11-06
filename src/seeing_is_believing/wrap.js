@@ -55,6 +55,7 @@ function walk(ast, parent, cb) {
     case "Literal":
     case "Identifier":
     case "BinaryExpression":
+    case "MemberExpression":
       cb(ast, parent)
       break
     case "ExpressionStatement":
