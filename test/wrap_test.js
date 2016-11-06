@@ -32,7 +32,13 @@ describe('wrap', function() {
     assertWraps("\n\n", "\n\n")
   })
 
-  it('wraps function definitions')
+  it('wraps function definitions', function() {
+    assertWraps('(function()     { })',              '(<function()     { }>)')
+    assertWraps('(function(a)    { })',              '(<function(a)    { }>)')
+    assertWraps('(function(a, b) { })',              '(<function(a, b) { }>)')
+    assertWraps('(function()     { 1 })',            '(<function()     { 1 }>)')
+    assertWraps('(function(a)    { return a + a })', '(<function(a)    { return a + a }>)')
+  })
 
   describe('variable declarations', function() {
     it('wraps nothing when a variable is declared without a value', function() {

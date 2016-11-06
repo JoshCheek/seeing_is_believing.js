@@ -59,6 +59,7 @@ function walk(ast, parent, cb) {
     case "CallExpression":
     case "ArrayExpression":
     case "ArrowFunctionExpression":
+    case "FunctionExpression":
       cb(ast, parent)
       break
     case "ExpressionStatement":
