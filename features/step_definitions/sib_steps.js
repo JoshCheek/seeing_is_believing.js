@@ -43,34 +43,34 @@ function steps() {
   this.When('I run "$command"', function(command, cucumberCallback) {
     binDir.then(bin =>
       inProvingGrounds.then(provingGrounds => {
-        const PATH   = `${bin}:${process.env.PATH}`
-        const pbcopy = spawn(command, [], {env: {PATH}, stdio: ["pipe", "pipe", "pipe"], shell: true})
-        pbcopy.stdin.end() // <-- eventually, this will need to be able to be set by another command
+        const PATH    = `${bin}:${process.env.PATH}`
+        const program = spawn(command, [], {env: {PATH}, stdio: ["pipe", "pipe", "pipe"], shell: true})
+        program.stdin.end() // <-- eventually, this will need to be able to be set by another command
 
         let stdoutDone = false
         let stdout     = ""
-        pbcopy.stdout.on('data', chunk => stdout += chunk)
-        pbcopy.stdout.on('end', () => stdoutDone = true)
+        program.stdout.on('data', chunk => stdout += chunk)
+        program.stdout.on('end', () => stdoutDone = true)
 
         let stderrDone = false
         let stderr     = ""
-        pbcopy.stderr.on('data', chunk => stderr += chunk)
-        pbcopy.stderr.on('end', () => stderrDone = true)
+        program.stderr.on('data', chunk => stderr += chunk)
+        program.stderr.on('end', () => stderrDone = true)
 
         let statusDone = false
         let status = null
-        pbcopy.on('exit', (code, string) => {
+        program.on('exit', (code, string) => {
           status = code
           statusDone = true
         })
 
-        setTimeout(considerCallback, 0)
-        function considerCallback() {
+        setTimeout(callbackWhenProcessIsDone, 0)
+        function callbackWhenProcessIsDone() {
           if(stdoutDone && stderrDone && statusDone) {
             lastCommand = {stdout: stdout, stderr: stderr, status: status}
             cucumberCallback()
           } else {
-            setTimeout(considerCallback, 0)
+            setTimeout(callbackWhenProcessIsDone, 0)
           }
         }
       })
