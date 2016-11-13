@@ -2,8 +2,8 @@ Feature: SeeingIsBelieving
   Scenario: Simple example
     Given the file "simple_example.js":
     """
-    var a = 1
-    var b = 2
+    var a = 100
+    var b = 20
     a + b
     """
     When I run "seeing_is_believing.js simple_example.js"
@@ -11,7 +11,7 @@ Feature: SeeingIsBelieving
     And the exit status is 0
     And stdout is:
     """
-    var a = 1  // => 1
-    var b = 2  // => 2
-    a + b      // => 3
+    var a = 100  // => 100
+    var b = 20   // => 20
+    a + b        // => 120
     """
