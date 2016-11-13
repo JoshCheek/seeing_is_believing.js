@@ -4,7 +4,8 @@
   "description": "Records and displays the result of every line of code in a JavaScript file.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --watch --bail"
+    "test": "mocha --watch --bail",
+    "cuke": "cucumber.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "3.5.0",
+    "cucumber": "^1.3.1",
     "mocha": "2.4.5"
   },
   "dependencies": {
