@@ -29,8 +29,6 @@ const inProvingGrounds  = provingGroundsDir.then(mkdir).then(dir => {
 module.exports = steps
 
 function steps() {
-  let lastCommand = {}
-
   this.Given('the file "$filename":', function(filename, body, callback) {
     inProvingGrounds.then(dir => {
       fs.writeFile(filename, body, (err) => {
@@ -64,31 +62,31 @@ function steps() {
           statusDone = true
         })
 
-        setTimeout(callbackWhenProcessIsDone, 0)
-        function callbackWhenProcessIsDone() {
+        const callbackWhenProcessIsDone = () => {
           if(stdoutDone && stderrDone && statusDone) {
-            lastCommand = {stdout: stdout, stderr: stderr, status: status}
+            this.lastCommand = {stdout: stdout, stderr: stderr, status: status}
             cucumberCallback()
           } else {
             setTimeout(callbackWhenProcessIsDone, 0)
           }
         }
+        setTimeout(callbackWhenProcessIsDone, 0)
       })
     )
   })
 
   this.Then("stderr is empty", function (callback) {
-    assert.equal(lastCommand.stderr, "")
+    assert.equal(this.lastCommand.stderr, "")
     callback()
   })
 
   this.Then("the exit status is $status", function (status, callback) {
-    assert.equal(lastCommand.status, status)
+    assert.equal(this.lastCommand.status, status)
     callback()
   })
 
   this.Then("stdout is:", function (output, callback) {
-    assert.equal(lastCommand.stdout, output)
+    assert.equal(this.lastCommand.stdout, output)
     callback()
   })
 }
