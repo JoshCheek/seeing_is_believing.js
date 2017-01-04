@@ -19,6 +19,7 @@ Notes for later
 * Put it on travis
 * Node has some sort of event API, eg `process.stdout.on("data", ...)`, would be good to use that with SiB as it discovers results
 * Creating a property https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
+* Spec: http://www.ecma-international.org/ecma-262/7.0/index.html
 
   ```javascript
   var o = {}; // Creates a new object
