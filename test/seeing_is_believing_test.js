@@ -24,4 +24,15 @@ describe('SeeingIsBelieving', function() {
   it('retains state across the lines', function(done) {
     assertRecords(`var char = "a" \n char + "b"`, {1: ["'a'"], 2: ["'ab'"]}, done)
   })
+
+  it('does not break the coherence of multi-line expressions' , function(done) {
+    assertRecords(
+      `"a"\n.toUpperCase()\n.toLowerCase()`,
+      { 1: ["'a'"],
+        2: ["'A'"],
+        3: ["'a'"],
+      },
+      done
+    )
+  })
 })

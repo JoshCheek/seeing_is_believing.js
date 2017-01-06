@@ -86,6 +86,12 @@ describe('wrap', function() {
       assertWraps('a => 1',       '<a => 1>')
       assertWraps('(a) => a + a', '<(a) => a + a>')
     })
+
+    specify('multiline expressions', function() {
+      assertWraps("'a'\n.toUpperCase()\n.toLowerCase()",
+        "<<<'a'>\n.toUpperCase()>\n.toLowerCase()>"
+      )
+    })
   })
 
   describe('for loops', function() {

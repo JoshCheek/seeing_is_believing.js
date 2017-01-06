@@ -55,8 +55,6 @@ function walk(ast, parent, cb) {
     case "Literal":
     case "Identifier":
     case "BinaryExpression":
-    case "MemberExpression":
-    case "CallExpression":
     case "ArrayExpression":
     case "ArrowFunctionExpression":
     case "FunctionExpression":
@@ -79,6 +77,16 @@ function walk(ast, parent, cb) {
       break
     case "VariableDeclarator":
       ast.init && walk(ast.init, ast, cb)
+      break
+    case "MemberExpression":
+      // object and property
+      walk(ast.object, ast, cb)
+      cb(ast, parent)
+      break
+    case "CallExpression":
+      // callee and arguments
+      walk(ast.callee, ast, cb)
+      cb(ast, parent)
       break
     default:
       console.dir(ast, {colors: true, depth: 6})
