@@ -15,7 +15,7 @@ const inputFile       = new Promise((resolve, reject) => {
   })
 })
 
-const inputLines = inputFile.then(body => body.match(/[^\r\n]+[\r\n]?/g))
+const inputLines = inputFile.then(body => body.match(/[^\n]*[\n]?/g))
 
 const handler = AggregateResult((results) => {
   inputLines.then(lines => {
@@ -27,6 +27,11 @@ const handler = AggregateResult((results) => {
 		}
 
     for(let index=0; index<lines.length; ++index) {
+      if(!results.forLine(index+1).length) {
+        process.stdout.write(lines[index])
+        continue
+      }
+
       const inputLine = chomp(lines[index])
 
       let padding     = ""
@@ -41,6 +46,9 @@ const handler = AggregateResult((results) => {
       let outputLine = chomp(inputLine) + padding + "  // => " + result
       process.stdout.write(outputLine)
     }
+  }).catch(err => {
+    console.log(`ERROR: ${err}`)
+    console.log(err.stack)
   })
 })
 

@@ -6,7 +6,7 @@ function AggregateResult(callback) {
 
   const result = {
     [lineResultsSym]: {},
-    forLine: lineNum => result[lineResultsSym][lineNum],
+    forLine: lineNum => result[lineResultsSym][lineNum]||[],
   }
 
   return resultHandler

@@ -27,9 +27,10 @@ describe('wrap', function() {
     assertWraps('', '')
   })
 
-  it.skip('does not wrap empty lines', function() {
+  it('does not wrap empty lines', function() {
     assertWraps("\n",   "\n")
     assertWraps("\n\n", "\n\n")
+    assertWraps("1\n\n2", "<1>\n\n<2>")
   })
 
   it('wraps function definitions', function() {

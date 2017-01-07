@@ -35,4 +35,15 @@ describe('SeeingIsBelieving', function() {
       done
     )
   })
+
+  it('returns an empty list for lines with nor esults', function(done) {
+    assertRecords(
+      `1\n\n2\n`,
+      { 1: ["1"],
+        2: [],
+        3: ["2"],
+      },
+      done
+    )
+  })
 })

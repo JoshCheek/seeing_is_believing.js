@@ -4,6 +4,7 @@ Feature: SeeingIsBelieving
     """
     var a = 100
     var b = 20
+
     a + b
     """
     When I run "seeing_is_believing.js simple_example.js"
@@ -13,5 +14,6 @@ Feature: SeeingIsBelieving
     """
     var a = 100  // => 100
     var b = 20   // => 20
+
     a + b        // => 120
     """
