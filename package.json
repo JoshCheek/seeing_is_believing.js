@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --watch --bail",
-    "cuke": "cucumber.js"
+    "cuke": "cucumber-js"
   },
   "repository": {
     "type": "git",
@@ -18,11 +18,11 @@
   "author": "JoshCheek",
   "license": "ISC",
   "devDependencies": {
-    "chai": "3.5.0",
+    "chai": "4.1.2",
     "cucumber": "^1.3.1",
-    "mocha": "2.4.5"
+    "mocha": "5.0.1"
   },
   "dependencies": {
-    "esprima": "^3.1.1"
+    "esprima": "^4.0.0"
   }
 }
