@@ -8,7 +8,7 @@ function wrap(code, aroundEach) {
   const toWrap       = {}
   const sourceChunks = code.split('')
 
-  // decorate / identify lines to wrap
+  // decorate and identify lines to wrap
   walk(ast, null, (node, parent) => {
     decorateNode(node, parent, sourceChunks)
     if(shouldRecordPotentialOverPrev(node, toWrap[node.loc.end.line]))

@@ -20,13 +20,12 @@ function rewriteCode(code) {
 }
 
 function sandboxFor(handler) {
-  return {
-    record: function record(lineNum, value) {
-      handler(['line_result', {
-        line_number: lineNum,
-        inspected:   inspect(value),
-      }])
-      return value
-    },
+  return { record }
+  function record(lineNum, value) {
+    handler(['line_result', {
+      line_number: lineNum,
+      inspected:   inspect(value),
+    }])
+    return value
   }
 }
