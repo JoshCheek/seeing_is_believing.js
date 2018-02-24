@@ -69,9 +69,11 @@ describe('wrap', function() {
       assertWraps('a()',     '<a()>')
       assertWraps('a.b()',   '<a.b()>')
       assertWraps('a.b.c()', '<a.b.c()>')
+      assertWraps('a.\nb\n.c\n.d()', '<<<<a>.\nb>\n.c>\n.d()>')
     })
 
-    specify.skip('the value of a spread expression is wrapped and the result is spread', function() {
+    specify('the value of a spread expression is wrapped and the result is spread', function() {
+      assertWraps('a(\n...b\n)', '<<a>(\n...<b>\n)>')
     })
 
     specify('arrays', function() {

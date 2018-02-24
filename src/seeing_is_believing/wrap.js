@@ -50,7 +50,6 @@ function decorateNode(node, parent, sourceChunks) {
 
 
 function walk(ast, parent, cb) {
-  // console.dir(ast, {colors: true, depth: 5})
   switch(ast.type) {
     case "Literal":
     case "Identifier":
@@ -86,7 +85,11 @@ function walk(ast, parent, cb) {
     case "CallExpression":
       // callee and arguments
       walk(ast.callee, ast, cb)
+      ast.arguments.forEach(arg => walk(arg, ast, cb))
       cb(ast, parent)
+      break
+    case 'SpreadElement':
+      walk(ast.argument, ast, cb)
       break
     default:
       console.dir(ast, {colors: true, depth: 6})
